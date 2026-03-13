@@ -1,0 +1,132 @@
+/* Importar fuente Montserrat */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+
+/* Estilo global */
+body {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  background: #f3f4f6;
+}
+
+/* Contenedor principal */
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Contenido */
+.content {
+  width: 100%;
+  max-width: 600px;
+}
+
+/* Títulos */
+.title {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  letter-spacing: 0.5px;
+}
+
+/* Logo grande */
+#rub {
+  font-size: 80px;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+/* Lista de pedidos vertical */
+.orders-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+/* Tarjeta de pedido */
+.order-card {
+  background: white;
+  border-radius: 14px;
+  padding: 16px;
+  border: 1px solid #e5e7eb;
+  width: 260px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.order-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+
+/* Colores según prioridad */
+.priority-alta { border-left: 6px solid #e63946; }    /* roja */
+.priority-normal { border-left: 6px solid #f4a261; }  /* naranja */
+.priority-baja { border-left: 6px solid #2a9d8f; }    /* verde */
+
+/* Contenido de la tarjeta */
+.order-title {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.order-address {
+  font-size: 12px;
+  margin-bottom: 8px;
+  color: #555;
+}
+
+.order-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.order-items li {
+  margin-bottom: 4px;
+}
+
+.order-total {
+  font-weight: 600;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+/* Botón para expandir la lista */
+.toggle-btn {
+  margin-top: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #e63946;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.toggle-btn:hover {
+  text-decoration: underline;
+}
+
+/* Botón completar pedido */
+.complete-btn {
+  margin-top: 10px;
+  width: 100%;
+  padding: 8px;
+  border: none;
+  border-radius: 8px;
+  background: #2ecc71;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.complete-btn:hover {
+  background: #27ae60;
+}
