@@ -1,132 +1,110 @@
-/* Importar fuente Montserrat */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
 
-/* Estilo global */
 body {
-  margin: 0;
-  font-family: 'Montserrat', sans-serif;
-  background: #f3f4f6;
+  margin:0;
+  font-family:'Montserrat',sans-serif;
+  background:#f3f4f6;
 }
 
-/* Contenedor principal */
-.app-container {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  padding: 20px;
-}
-
-/* Contenido */
-.content {
-  width: 100%;
-  max-width: 600px;
-}
-
-/* Títulos */
-.title {
-  text-align: center;
-  font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 20px;
-  letter-spacing: 0.5px;
-}
-
-/* Logo grande */
-#rub {
-  font-size: 80px;
-  margin-top: 0;
-  margin-bottom: 10px;
-}
-
-/* Lista de pedidos vertical */
-.orders-grid {
+/* --- Sidebar --- */
+.sidebar {
+  width: 200px;
+  background: #fff;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 18px;
+  justify-content: center; /* Centra verticalmente */
+  align-items: center;     /* Opcional: centra horizontalmente los botones */
+  gap: 20px;
+  border-right: 1px solid #ddd;
+  height: 100vh;
+  position: fixed;
+  padding: 0; /* Opcional, podemos quitar padding para centrar mejor */
 }
 
-/* Tarjeta de pedido */
-.order-card {
-  background: white;
-  border-radius: 14px;
-  padding: 16px;
-  border: 1px solid #e5e7eb;
-  width: 260px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.order-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
-}
-
-/* Colores según prioridad */
-.priority-alta { border-left: 6px solid #e63946; }    /* roja */
-.priority-normal { border-left: 6px solid #f4a261; }  /* naranja */
-.priority-baja { border-left: 6px solid #2a9d8f; }    /* verde */
-
-/* Contenido de la tarjeta */
-.order-title {
-  font-size: 15px;
-  font-weight: 600;
-  margin-bottom: 10px;
-}
-
-.order-address {
-  font-size: 12px;
-  margin-bottom: 8px;
-  color: #555;
-}
-
-.order-items {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  font-size: 13px;
-  font-weight: 400;
-}
-
-.order-items li {
-  margin-bottom: 4px;
-}
-
-.order-total {
-  font-weight: 600;
-  margin-top: 10px;
-  font-size: 14px;
-}
-
-/* Botón para expandir la lista */
-.toggle-btn {
-  margin-top: 10px;
-  font-size: 12px;
-  font-weight: 600;
-  color: #e63946;
-  border: none;
-  background: none;
-  cursor: pointer;
-}
-
-.toggle-btn:hover {
-  text-decoration: underline;
-}
-
-/* Botón completar pedido */
-.complete-btn {
-  margin-top: 10px;
-  width: 100%;
-  padding: 8px;
+.sidebar button {
+  font-family:'Montserrat',sans-serif;
+  width: 160px; /* fija un ancho consistente */
+  padding: 12px;
   border: none;
   border-radius: 8px;
-  background: #2ecc71;
-  color: white;
+  background: #d4cfcc;
+  color: black;
   font-weight: 600;
   cursor: pointer;
-  transition: 0.2s;
 }
 
-.complete-btn:hover {
-  background: #27ae60;
+.sidebar button:hover {
+  background: #949190;
+}
+
+/* --- Dashboard --- */
+.logo { text-align:center; font-size:70px; margin:0; }
+
+.stats { display:flex; justify-content:center; gap:40px; margin:20px 0; }
+
+.stats div {
+  background:white; padding:10px 20px;
+  border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.05); font-weight:600;
+}
+
+.stats span { display:block; font-size:20px; }
+
+.columns { display:grid; grid-template-columns: repeat(4,1fr); gap:20px; }
+
+.column { background:#f8f9fa; padding:12px; border-radius:12px; min-height:500px; }
+
+.column h2 { text-align:center; margin-bottom:10px; }
+
+/* --- Card --- */
+.order-card {
+  background:white; border-radius:10px; padding:12px; margin-bottom:12px;
+  box-shadow:0 3px 10px rgba(0,0,0,0.08); transition:0.2s;
+}
+
+.order-card:hover { transform:translateY(-2px); }
+
+.order-header { display:flex; justify-content:space-between; font-weight:600; }
+
+.order-time { color:#e63946; }
+
+.order-address { font-size:13px; margin:6px 0; }
+
+.order-items { list-style:none; padding:0; margin:0; font-size:13px; }
+
+.order-total { margin-top:8px; font-weight:600; }
+
+/* Buttons */
+.actions button {
+  width:100%; margin-top:10px; padding:8px; border:none; border-radius:6px;
+  background:#d4cfcc; color:black; cursor:pointer;
+}
+
+.actions button:hover { background:#949190; }
+
+/* Priorities */
+.priority-alta { border-left:5px solid #e63946; }
+.priority-normal { border-left:5px solid #f4a261; }
+.priority-baja { border-left:5px solid #2a9d8f; }
+
+/* Toggle */
+.toggle-btn { border:none; background:none; color:#e63946; cursor:pointer; margin-top:6px; }
+
+/* Contenedor de gráficos centrado */
+.chart-container {
+  display: flex;
+  justify-content: center; /* centra horizontalmente */
+  align-items: center;     /* centra verticalmente si tiene altura */
+  flex-direction: column;  /* para que el título quede arriba y la gráfica debajo */
+  margin-top: 40px;        /* opcional: separa del contenido superior */
+}
+
+.center-screen {
+  display: flex;
+  justify-content: center;  /* centra horizontalmente */
+  align-items: center;      /* centra verticalmente */
+  flex-direction: column;   /* título arriba, gráfica debajo */
+  width: calc(100% - 200px); /* ancho disponible menos sidebar */
+  height: 100vh;            /* altura total de la ventana */
+  box-sizing: border-box;
+  padding-left: 200px;      /* espacio para el sidebar fijo */
 }
