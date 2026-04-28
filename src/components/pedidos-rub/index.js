@@ -10,7 +10,128 @@ import {
   ResponsiveContainer
 } from "recharts";
 
-// --- Calles reales ---
+/* --- MENU --- */
+const menu = {
+  entrantes: [
+    { name: "Patatas", price: 2.0 },
+    { name: "Sweet Potatoes", price: 3.2 },
+    { name: "Tequeños", price: 4.2 },
+    { name: "Fingers de pollo", price: 4.2 },
+    { name: "Nuggets", price: 3.5 },
+    { name: "Vegan Nuggets", price: 4.2 },
+    { name: "Patatas Gajo RUB", price: 2.9 }
+  ],
+
+  hamburguesas_ternera: [
+    { name: "Simple", price: 2.3 },
+    { name: "Especial", price: 5.1 },
+    { name: "Mustang", price: 5.4 }
+  ],
+
+  hamburguesas_buey: [
+    { name: "Toscana", price: 6.8, premium: true },
+    { name: "Cowboy", price: 6.7, premium: true }
+  ],
+
+  black_angus: [
+    { name: "Montecarlo", price: 8.6, premium: true },
+    { name: "Angus SPECIAL RUB", price: 8.6, premium: true },
+    { name: "Angus Custom", price: 8.6, premium: true },
+    { name: "Toscana Supreme", price: 10.4, premium: true }
+  ],
+
+  ensaladas: [
+    { name: "Fresca", price: 4.7 },
+    { name: "Capresse", price: 5.2 },
+    { name: "César", price: 5.2 }
+  ],
+
+  smash: [
+    { name: "Smash Rub", price: 8.4, premium: true },
+    { name: "Smash Montecarlo", price: 8.4, premium: true },
+    { name: "Smash Supreme", price: 8.4, premium: true }
+  ],
+
+  pollo: [
+    { name: "Pimpollo", price: 4.0 },
+    { name: "Pimpollo Custom", price: 6.9, premium: true }
+  ],
+
+  pan_ligero: [
+    { name: "Ana", price: 5.0, premium: true },
+    { name: "Trufada", price: 5.0, premium: true },
+    { name: "Española", price: 5.0, premium: true }
+  ],
+
+  sandwiches: [
+    { name: "Mixto", price: 3.0 },
+    { name: "Moñi", price: 3.0 },
+    { name: "Ave", price: 3.8 },
+    { name: "Especial", price: 5.5 },
+    { name: "Jackson", price: 5.0 },
+    { name: "Valyrio", price: 5.5 }
+  ],
+
+  pan_golden: [
+    { name: "Serrano", price: 6.4, premium: true },
+    { name: "Donosti", price: 6.4, premium: true },
+    { name: "Máximo", price: 6.4, premium: true }
+  ],
+
+  perritos: [
+    { name: "Simple", price: 2.7 },
+    { name: "Especial", price: 3.7 },
+    { name: "Wonder", price: 4.2 },
+    { name: "Hindú", price: 3.5 },
+    { name: "Zeppelin", price: 3.5 }
+  ],
+
+  baguettes: [
+    { name: "Bacon y queso", price: 4.0 },
+    { name: "Tortilla", price: 4.4 },
+    { name: "Suizo", price: 5.0 },
+    { name: "Serranito", price: 5.4 },
+    { name: "Jackson", price: 5.9 },
+    { name: "Especial", price: 5.7 }
+  ],
+
+  gondolitas: [
+    { name: "York", price: 3.2 },
+    { name: "Carbonara", price: 4.0 },
+    { name: "Donatella", price: 5.4 },
+    { name: "Carmen", price: 5.4 },
+    { name: "Extremeña", price: 4.5 },
+    { name: "Del Monte", price: 5.4 },
+    { name: "Guay", price: 4.7 }
+  ],
+
+  vegetariano: [
+    { name: "Veggie Burger", price: 8.0 },
+    { name: "Sandwich Especial Veg", price: 6.0 },
+    { name: "Sandwich Jackson Veg", price: 6.0 }
+  ],
+
+  bebidas: [
+    { name: "Coca-Cola", price: 1.2 },
+    { name: "Coca-Cola Zero", price: 1.2 },
+    { name: "Fanta Naranja", price: 1.2 },
+    { name: "Fanta Limón", price: 1.2 },
+    { name: "Nestea", price: 1.2 },
+    { name: "Agua", price: 1.2 }
+  ],
+
+  extras: [
+    { name: "Bacon", price: 0.7 },
+    { name: "Queso", price: 0.7 },
+    { name: "Mayonesa", price: 0.7 },
+    { name: "Barbacoa", price: 0.7 },
+    { name: "Curry", price: 0.7 },
+    { name: "Nevada", price: 0.7 },
+    { name: "Volcán", price: 0.7}
+  ]
+};
+
+/* --- Calles --- */
 const callesLosPalacios = [
   "Calle Real",
   "Avenida de Sevilla",
@@ -25,25 +146,15 @@ const callesLosPalacios = [
   "Calle José María Pemán"
 ];
 
-// --- Datos de ejemplo ---
+/* --- Sample --- */
 const sampleOrders = [
   {
     id: 1,
     address: "Calle Real 12",
-    total: 14.9,
     priority: "normal",
     status: "new",
     createdAt: Date.now(),
-    items: ["Burger clásica", "Patatas", "Coca-cola"]
-  },
-  {
-    id: 2,
-    address: "Avenida de Sevilla 45",
-    total: 11.5,
-    priority: "alta",
-    status: "preparing",
-    createdAt: Date.now(),
-    items: ["Burger doble", "Sin cebolla"]
+    items: [{ name: "Simple", price: 2.3, extras: [], quantity: 1 }]
   }
 ];
 
@@ -54,8 +165,8 @@ const statuses = [
   { id: "delivered", label: "🚚 En reparto" }
 ];
 
-// --- Sidebar ---
-function Sidebar({ selected, setSelected }) {
+/* --- Sidebar --- */
+function Sidebar({ setSelected }) {
   return (
     <div className="sidebar">
       <button onClick={() => setSelected("dashboard")}>Pedidos hoy</button>
@@ -65,63 +176,53 @@ function Sidebar({ selected, setSelected }) {
   );
 }
 
-// --- OrderCard ---
-function OrderCard({ order, moveOrder }) {
-  const [expanded, setExpanded] = useState(false);
-
+/* --- OrderCard --- */
+function OrderCard({ order, moveOrder, openEditor }) {
   const minutes = Math.floor((Date.now() - order.createdAt) / 60000);
 
   let timeClass = "time-green";
+  if (minutes >= 30) timeClass = "time-red";
+  else if (minutes >= 20) timeClass = "time-orange";
 
-  if (minutes >= 30) {
-    timeClass = "time-red";
-  } else if (minutes >= 20) {
-    timeClass = "time-orange";
-  }
+  const total = order.items.reduce(
+    (acc, i) => acc + i.price + i.extras.length * 0.7,
+    0
+  );
 
   return (
-    <div className={`order-card priority-${order.priority}`}>
+    <div className={`order-card priority-${order.priority}`} onClick={() => openEditor(order)}>
       <div className="order-header">
         <span className="order-title">Pedido #{order.id}</span>
-        <span className={`order-time ${timeClass}`}>
-          ⏱ {minutes} min
-        </span>
+        <span className={`order-time ${timeClass}`}>⏱ {minutes} min</span>
       </div>
 
       <div className="order-address">📍 {order.address}</div>
 
       <ul className="order-items">
-        {(expanded ? order.items : order.items.slice(0, 3)).map((item, i) => (
-          <li key={i}>• {item}</li>
+        {order.items.map((item, i) => (
+          <li key={i}>
+            • {item.name} ({item.extras.join(", ")})
+          </li>
         ))}
       </ul>
 
-      {order.items.length > 3 && (
-        <button
-          className="toggle-btn"
-          onClick={() => setExpanded(!expanded)}
-        >
-          {expanded ? "Ver menos" : "Ver pedido completo"}
-        </button>
-      )}
-
-      <div className="order-total">{order.total.toFixed(2)} €</div>
+      <div className="order-total">{total.toFixed(2)} €</div>
 
       <div className="actions">
         {order.status === "new" && (
-          <button onClick={() => moveOrder(order.id, "preparing")}>
+          <button onClick={e => { e.stopPropagation(); moveOrder(order.id, "preparing"); }}>
             Empezar preparación
           </button>
         )}
 
         {order.status === "preparing" && (
-          <button onClick={() => moveOrder(order.id, "ready")}>
+          <button onClick={e => { e.stopPropagation(); moveOrder(order.id, "ready"); }}>
             Marcar como listo
           </button>
         )}
 
         {order.status === "ready" && (
-          <button onClick={() => moveOrder(order.id, "delivered")}>
+          <button onClick={e => { e.stopPropagation(); moveOrder(order.id, "delivered"); }}>
             Entregar pedido
           </button>
         )}
@@ -130,36 +231,130 @@ function OrderCard({ order, moveOrder }) {
   );
 }
 
-// --- OrdersColumn ---
-function OrdersColumn({ title, orders, moveOrder }) {
+/* --- Modal Editor --- */
+function EditOrderModal({ order, updateOrder,deleteOrder , close }) {
+  if (!order) return null;
+
+  const addItem = item => {
+    updateOrder({
+      ...order,
+      items: [...order.items, { ...item, extras: [], quantity: 1 }]
+    });
+  };
+
+  const removeItem = index => {
+    updateOrder({
+      ...order,
+      items: order.items.filter((_, i) => i !== index)
+    });
+  };
+
+  const addExtra = (index, extra) => {
+    const items = [...order.items];
+    items[index].extras.push(extra.name);
+    updateOrder({ ...order, items });
+  };
+
+  const total = order.items.reduce(
+    (acc, i) => acc + i.price + i.extras.length * 0.7,
+    0
+  );
+
+  return (
+    <div className="modal" onClick={close}>
+      <div className="modal-content" onClick={e => e.stopPropagation()}>
+        <h2>Editar Pedido #{order.id}</h2>
+
+        {order.items.map((item, i) => (
+          <div key={i}>
+            <strong>{item.name}</strong>
+            <div>
+              Extras:
+              {item.extras.length === 0 && " ninguno"}
+
+              {item.extras.map((extra, idx) => (
+                <span
+                  key={idx}
+                  className="extra-tag"
+                  onClick={() => {
+                    const items = [...order.items];
+                    items[i].extras = items[i].extras.filter((_, eIdx) => eIdx !== idx);
+                    updateOrder({ ...order, items });
+                  }}
+                >
+                  {extra} ❌
+                </span>
+              ))}
+            </div>
+
+            <button onClick={() => removeItem(i)}>Eliminar</button>
+
+            {menu.extras.map(extra => (
+              <button key={extra.name} onClick={() => addExtra(i, extra)}>
+                + {extra.name}
+              </button>
+            ))}
+          </div>
+        ))}
+
+        <h3>Añadir producto</h3>
+
+        {Object.entries(menu).map(([cat, items]) => {
+          if (cat === "extras") return null;
+
+          return (
+            <div key={cat}>
+              <h4>{cat}</h4>
+              {items.map(item => (
+                <button key={item.name} onClick={() => addItem(item)}>
+                  {item.name} - {item.price}€
+                </button>
+              ))}
+            </div>
+          );
+        })}
+
+        <h3>Total: {total.toFixed(2)} €</h3>
+
+        <button
+          style={{ background: "#e63946", color: "white" }}
+          onClick={() => {
+            if (window.confirm("¿Eliminar pedido?")) {
+              deleteOrder(order.id);
+            }
+          }}
+        >
+          🗑 Eliminar pedido
+        </button>
+
+        <button onClick={close}>Cerrar</button>
+              </div>
+            </div>
+          );
+        }
+
+/* --- Columns --- */
+function OrdersColumn({ title, orders, moveOrder, openEditor }) {
   return (
     <div className="column">
       <h2>{title}</h2>
       {orders.map(order => (
-        <OrderCard key={order.id} order={order} moveOrder={moveOrder} />
+        <OrderCard key={order.id} order={order} moveOrder={moveOrder} openEditor={openEditor} />
       ))}
     </div>
   );
 }
 
-// --- Dashboard ---
-function DashboardContent({ orders, moveOrder }) {
+/* --- Dashboard --- */
+function DashboardContent({ orders, moveOrder, openEditor }) {
   return (
     <>
       <h1 className="logo">RUB</h1>
 
       <div className="stats">
-        <div>
-          Pedidos activos <span>{orders.length}</span>
-        </div>
-        <div>
-          Preparando{" "}
-          <span>{orders.filter(o => o.status === "preparing").length}</span>
-        </div>
-        <div>
-          Listos{" "}
-          <span>{orders.filter(o => o.status === "ready").length}</span>
-        </div>
+        <div>Pedidos activos <span>{orders.length}</span></div>
+        <div>Preparando <span>{orders.filter(o => o.status === "preparing").length}</span></div>
+        <div>Listos <span>{orders.filter(o => o.status === "ready").length}</span></div>
       </div>
 
       <div className="columns">
@@ -169,6 +364,7 @@ function DashboardContent({ orders, moveOrder }) {
             title={status.label}
             orders={orders.filter(o => o.status === status.id)}
             moveOrder={moveOrder}
+            openEditor={openEditor}
           />
         ))}
       </div>
@@ -176,32 +372,29 @@ function DashboardContent({ orders, moveOrder }) {
   );
 }
 
-// --- OrdersPerDay ---
+/* --- OrdersPerDay --- */
 function OrdersPerDay({ orders }) {
   const grouped = orders.reduce((acc, order) => {
     const date = new Date(order.createdAt);
+
     const dayStr = `${date.getDate().toString().padStart(2, "0")}-${(
       date.getMonth() + 1
-    )
-      .toString()
-      .padStart(2, "0")}-${date.getFullYear()}`;
+    ).toString().padStart(2, "0")}-${date.getFullYear()}`;
 
     acc[dayStr] = (acc[dayStr] || 0) + 1;
     return acc;
   }, {});
 
-  const data = Object.entries(grouped).map(([date, count]) => ({
-    date,
-    count
-  }));
+  const data = Object.entries(grouped);
 
   return (
     <div style={{ padding: "20px" }}>
       <h2>Pedidos por día</h2>
+
       <ul>
-        {data.map(d => (
-          <li key={d.date}>
-            {d.date}: {d.count} pedidos
+        {data.map(([date, count]) => (
+          <li key={date}>
+            📅 {date}: <strong>{count}</strong> pedidos
           </li>
         ))}
       </ul>
@@ -209,108 +402,77 @@ function OrdersPerDay({ orders }) {
   );
 }
 
-// --- WeeklyAverage ---
+/* --- WeeklyAverage --- */
 function WeeklyAverage({ orders }) {
-  const days = [
-    "Lunes",
-    "Martes",
-    "Miércoles",
-    "Jueves",
-    "Viernes",
-    "Sábado",
-    "Domingo"
-  ];
-
+  const days = ["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"];
   const counts = Array(7).fill(0);
 
-  if (orders.length === 0) return <div>No hay pedidos aún</div>;
-
-  const timestamps = orders.map(o => o.createdAt);
-  const firstDate = new Date(Math.min(...timestamps));
-  const lastDate = new Date(Math.max(...timestamps));
-
-  const msPerWeek = 7 * 24 * 60 * 60 * 1000;
-  const numberOfWeeks = Math.max(
-    1,
-    Math.ceil((lastDate - firstDate) / msPerWeek)
-  );
-
   orders.forEach(o => {
-    let day = new Date(o.createdAt).getDay();
-    day = day === 0 ? 6 : day - 1;
-    counts[day]++;
+    let d = new Date(o.createdAt).getDay();
+    d = d === 0 ? 6 : d - 1;
+    counts[d]++;
   });
 
   const data = days.map((day, i) => ({
     day,
-    average: (counts[i] / numberOfWeeks).toFixed(2)
+    average: counts[i]
   }));
 
   return (
-    <div className="center-screen">
-      <h2>Promedio de pedidos por día de la semana</h2>
-
-      <ResponsiveContainer width="90%" height={300}>
-        <BarChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis
-            dataKey="day"
-            interval={0}
-            angle={-25}
-            textAnchor="end"
-            tick={{ fontSize: 11 }}
-            height={70}
-          />
-          <YAxis />
-          <Tooltip />
-          <Bar dataKey="average" />
-        </BarChart>
-      </ResponsiveContainer>
-    </div>
+    <ResponsiveContainer width="100%" height={300}>
+      <BarChart data={data}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="day" />
+        <YAxis />
+        <Tooltip />
+        <Bar dataKey="average" />
+      </BarChart>
+    </ResponsiveContainer>
   );
 }
 
-// --- MAIN ---
+/* --- MAIN --- */
 export default function OrdersDashboard() {
   const [orders, setOrders] = useState(sampleOrders);
-  const [nextId, setNextId] = useState(sampleOrders.length + 1);
-  const [selectedView, setSelectedView] = useState("dashboard");
+  const [nextId, setNextId] = useState(2);
+  const [view, setView] = useState("dashboard");
+  const [selectedOrder, setSelectedOrder] = useState(null);
 
   const notificationSound = useRef(new Audio(Notificacion));
 
   const moveOrder = (id, status) => {
     setOrders(prev =>
-      prev.map(order =>
-        order.id === id ? { ...order, status } : order
-      )
+      prev.map(o => (o.id === id ? { ...o, status } : o))
     );
   };
 
-  const addOrder = useCallback(() => {
-    const calle =
-      callesLosPalacios[
-        Math.floor(Math.random() * callesLosPalacios.length)
-      ];
+  const updateOrder = updated => {
+    setOrders(prev => prev.map(o => (o.id === updated.id ? updated : o)));
+    setSelectedOrder(updated);
+  };
 
+  const addOrder = useCallback(() => {
+    const calle = callesLosPalacios[Math.floor(Math.random() * callesLosPalacios.length)];
     const numero = Math.floor(Math.random() * 120) + 1;
 
     const newOrder = {
       id: nextId,
       address: `${calle} ${numero}`,
-      total: Number((Math.random() * 20 + 8).toFixed(2)),
-      priority: ["alta", "normal", "baja"][
-        Math.floor(Math.random() * 3)
-      ],
+      priority: ["alta","normal","baja"][Math.floor(Math.random() * 3)],
       status: "new",
       createdAt: Date.now(),
-      items: ["Burger RUB", "Patatas", "Coca-cola"]
+      items: [{ name: "Simple", price: 2.3, extras: [], quantity: 1 }]
     };
 
     notificationSound.current.play().catch(() => {});
-
     setOrders(prev => [...prev, newOrder]);
     setNextId(prev => prev + 1);
   }, [nextId]);
+
+  const deleteOrder = (id) => {
+  setOrders(prev => prev.filter(o => o.id !== id));
+  setSelectedOrder(null);
+};
 
   useEffect(() => {
     const interval = setInterval(addOrder, 15000);
@@ -319,21 +481,28 @@ export default function OrdersDashboard() {
 
   return (
     <div style={{ display: "flex" }}>
-      <Sidebar selected={selectedView} setSelected={setSelectedView} />
+      <Sidebar setSelected={setView} />
 
       <div className="content">
-        {selectedView === "dashboard" && (
-          <DashboardContent orders={orders} moveOrder={moveOrder} />
+        {view === "dashboard" && (
+          <DashboardContent
+            orders={orders}
+            moveOrder={moveOrder}
+            openEditor={setSelectedOrder}
+          />
         )}
 
-        {selectedView === "ordersPerDay" && (
-          <OrdersPerDay orders={orders} />
-        )}
-
-        {selectedView === "weeklyAverage" && (
-          <WeeklyAverage orders={orders} />
-        )}
+        {view === "ordersPerDay" && <OrdersPerDay orders={orders} />}
+        {view === "weeklyAverage" && <WeeklyAverage orders={orders} />}
       </div>
+
+      <EditOrderModal
+        order={selectedOrder}
+        updateOrder={updateOrder}
+        deleteOrder={deleteOrder}
+        close={() => setSelectedOrder(null)}
+      />
+      
     </div>
   );
 }
