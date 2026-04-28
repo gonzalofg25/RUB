@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback} from "react";
 import Notificacion from "../../resources/notificacion.mp3";
 import {
   BarChart,
@@ -23,8 +23,8 @@ const menu = {
   ],
 
   hamburguesas_ternera: [
-    { name: "Simple", price: 2.3 },
-    { name: "Especial", price: 5.1 },
+    { name: "Hamburguesa Simple", price: 2.3 },
+    { name: "Hamburguesa Especial", price: 5.1 },
     { name: "Mustang", price: 5.4 }
   ],
 
@@ -79,8 +79,8 @@ const menu = {
   ],
 
   perritos: [
-    { name: "Simple", price: 2.7 },
-    { name: "Especial", price: 3.7 },
+    { name: "Perrito Simple", price: 2.7 },
+    { name: "Perrito Especial", price: 3.7 },
     { name: "Wonder", price: 4.2 },
     { name: "Hindú", price: 3.5 },
     { name: "Zeppelin", price: 3.5 }
@@ -178,6 +178,7 @@ function Sidebar({ setSelected }) {
 
 /* --- OrderCard --- */
 function OrderCard({ order, moveOrder, openEditor }) {
+  const [expanded, setExpanded] = useState(false);
   const minutes = Math.floor((Date.now() - order.createdAt) / 60000);
 
   let timeClass = "time-green";
@@ -199,12 +200,24 @@ function OrderCard({ order, moveOrder, openEditor }) {
       <div className="order-address">📍 {order.address}</div>
 
       <ul className="order-items">
-        {order.items.map((item, i) => (
-          <li key={i}>
-            • {item.name} ({item.extras.join(", ")})
-          </li>
-        ))}
+      {(expanded ? order.items : order.items.slice(0, 2)).map((item, i) => (
+        <li key={i}>
+          • {item.name} ({item.extras.join(", ")})
+        </li>
+      ))}
       </ul>
+
+      {order.items.length > 2 && (
+      <button
+        className="toggle-btn"
+        onClick={(e) => {
+          e.stopPropagation();
+          setExpanded(prev => !prev);
+        }}
+      >
+        {expanded ? "Ver menos" : `Ver más (${order.items.length - 2})`}
+      </button>
+    )}
 
       <div className="order-total">{total.toFixed(2)} €</div>
 
@@ -347,6 +360,7 @@ function OrdersColumn({ title, orders, moveOrder, openEditor }) {
 
 /* --- Dashboard --- */
 function DashboardContent({ orders, moveOrder, openEditor }) {
+  
   return (
     <>
       <h1 className="logo">RUB</h1>
@@ -451,23 +465,41 @@ export default function OrdersDashboard() {
     setSelectedOrder(updated);
   };
 
-  const addOrder = useCallback(() => {
-    const calle = callesLosPalacios[Math.floor(Math.random() * callesLosPalacios.length)];
-    const numero = Math.floor(Math.random() * 120) + 1;
+  const getRandomItemFromMenu = () => {
+  const categories = Object.keys(menu).filter(k => k !== "extras");
+  const randomCat = categories[Math.floor(Math.random() * categories.length)];
+  const items = menu[randomCat];
+  return items[Math.floor(Math.random() * items.length)];
+};
 
-    const newOrder = {
-      id: nextId,
-      address: `${calle} ${numero}`,
-      priority: ["alta","normal","baja"][Math.floor(Math.random() * 3)],
-      status: "new",
-      createdAt: Date.now(),
-      items: [{ name: "Simple", price: 2.3, extras: [], quantity: 1 }]
+const addOrder = useCallback(() => {
+  const calle = callesLosPalacios[Math.floor(Math.random() * callesLosPalacios.length)];
+  const numero = Math.floor(Math.random() * 120) + 1;
+
+  const randomItemsCount = Math.floor(Math.random() * 4) + 1;
+
+  const items = Array.from({ length: randomItemsCount }, () => {
+    const item = getRandomItemFromMenu();
+    return {
+      ...item,
+      extras: [],
+      quantity: 1
     };
+  });
 
-    notificationSound.current.play().catch(() => {});
-    setOrders(prev => [...prev, newOrder]);
-    setNextId(prev => prev + 1);
-  }, [nextId]);
+  const newOrder = {
+    id: nextId,
+    address: `${calle} ${numero}`,
+    priority: ["alta", "normal", "baja"][Math.floor(Math.random() * 3)],
+    status: "new",
+    createdAt: Date.now(),
+    items
+  };
+
+  notificationSound.current.play().catch(() => {});
+  setOrders(prev => [...prev, newOrder]);
+  setNextId(prev => prev + 1);
+}, [nextId]);
 
   const deleteOrder = (id) => {
   setOrders(prev => prev.filter(o => o.id !== id));
