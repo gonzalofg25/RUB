@@ -71,11 +71,21 @@ function OrderCard({ order, moveOrder }) {
 
   const minutes = Math.floor((Date.now() - order.createdAt) / 60000);
 
+  let timeClass = "time-green";
+
+  if (minutes >= 30) {
+    timeClass = "time-red";
+  } else if (minutes >= 20) {
+    timeClass = "time-orange";
+  }
+
   return (
     <div className={`order-card priority-${order.priority}`}>
       <div className="order-header">
         <span className="order-title">Pedido #{order.id}</span>
-        <span className="order-time">⏱ {minutes} min</span>
+        <span className={`order-time ${timeClass}`}>
+          ⏱ {minutes} min
+        </span>
       </div>
 
       <div className="order-address">📍 {order.address}</div>

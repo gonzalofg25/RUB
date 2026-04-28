@@ -100,7 +100,6 @@ body {
 }
 
 .order-time {
-  color: #e63946;
   font-weight: bold;
 }
 
@@ -207,4 +206,16 @@ body {
   .recharts-text {
     font-size: 10px;
   }
+}
+
+.time-green {
+  color: #19703d; /* verde */
+}
+
+.time-orange {
+  color: #d6880a; /* naranja */
+}
+
+.time-red {
+  color: #e63946; /* rojo */
 }
