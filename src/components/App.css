@@ -290,3 +290,13 @@ body {
   background: #e63946;
   color: white;
 }
+
+.modal button.eliminar {
+  background: #e63946 !important;
+  color: white;
+}
+
+.modal button.eliminar:hover {
+  background: #971d27 !important;
+  color: white;
+}

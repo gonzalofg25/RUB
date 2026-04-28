@@ -300,7 +300,7 @@ function EditOrderModal({ order, updateOrder,deleteOrder , close }) {
               ))}
             </div>
 
-            <button onClick={() => removeItem(i)}>Eliminar</button>
+            <button className="eliminar" onClick={() => removeItem(i)}>Eliminar</button>
 
             {menu.extras.map(extra => (
               <button key={extra.name} onClick={() => addExtra(i, extra)}>
@@ -330,7 +330,7 @@ function EditOrderModal({ order, updateOrder,deleteOrder , close }) {
         <h3>Total: {total.toFixed(2)} €</h3>
 
         <button
-          style={{ background: "#e63946", color: "white" }}
+          className="eliminar"
           onClick={() => {
             if (window.confirm("¿Eliminar pedido?")) {
               deleteOrder(order.id);
