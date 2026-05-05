@@ -300,3 +300,35 @@ body {
   background: #971d27 !important;
   color: white;
 }
+
+.order-type {
+  font-size: 12px;
+  margin-top: 4px;
+  font-weight: 600;
+}
+
+.orders-day-list li {
+  margin-bottom: 15px;
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.filters {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filters button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  background: #d4cfcc;
+  cursor: pointer;
+}
+
+.filters button:hover {
+  background: #949190;
+}

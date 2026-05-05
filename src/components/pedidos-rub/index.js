@@ -151,6 +151,7 @@ const sampleOrders = [
   {
     id: 1,
     address: "Calle Real 12",
+    type: "delivery",
     priority: "normal",
     status: "new",
     createdAt: Date.now(),
@@ -197,7 +198,18 @@ function OrderCard({ order, moveOrder, openEditor }) {
         <span className={`order-time ${timeClass}`}>⏱ {minutes} min</span>
       </div>
 
-      <div className="order-address">📍 {order.address}</div>
+      {order.type === "delivery" && (
+        <div className="order-address">📍 {order.address}
+        {order.type === "salon" && "🍽 En local"}
+        {order.type === "recoger" && "🛍 Recogida en mostrador"}
+        </div>
+      )}
+
+      <div className="order-type">
+        {order.type === "salon" && "🍽 Salón"}
+        {order.type === "recoger" && "🛍 Recoger"}
+        {order.type === "delivery" && "🚚 Domicilio"}
+      </div>
 
       <ul className="order-items">
       {(expanded ? order.items : order.items.slice(0, 2)).map((item, i) => (
@@ -234,8 +246,13 @@ function OrderCard({ order, moveOrder, openEditor }) {
           </button>
         )}
 
-        {order.status === "ready" && (
-          <button onClick={e => { e.stopPropagation(); moveOrder(order.id, "delivered"); }}>
+        {order.status === "ready" && order.type === "delivery" && (
+          <button
+            onClick={e => {
+              e.stopPropagation();
+              moveOrder(order.id, "delivered");
+            }}
+          >
             Entregar pedido
           </button>
         )}
@@ -359,11 +376,29 @@ function OrdersColumn({ title, orders, moveOrder, openEditor }) {
 }
 
 /* --- Dashboard --- */
-function DashboardContent({ orders, moveOrder, openEditor }) {
+function DashboardContent({ orders, moveOrder, openEditor, viewType, typeFilter,setTypeFilter  }) {
   
+  const isSpecialView = typeFilter !== "all";
+
+  const visibleStatuses = isSpecialView
+    ? statuses.filter(s => s.id !== "delivered")
+    : statuses;
+
+  const filteredOrders =
+  typeFilter === "all"
+    ? orders
+    : orders.filter(o => o.type === typeFilter);
+
   return (
     <>
       <h1 className="logo">RUB</h1>
+
+      <div className="filters">
+      <button onClick={() => setTypeFilter("all")}>Todos</button>
+      <button onClick={() => setTypeFilter("delivery")}>🚚 Domicilio</button>
+      <button onClick={() => setTypeFilter("salon")}>🍽 Salón</button>
+      <button onClick={() => setTypeFilter("recoger")}>🛍 Recoger</button>
+    </div>
 
       <div className="stats">
         <div>Pedidos activos <span>{orders.length}</span></div>
@@ -372,16 +407,17 @@ function DashboardContent({ orders, moveOrder, openEditor }) {
       </div>
 
       <div className="columns">
-        {statuses.map(status => (
+        {visibleStatuses.map(status => (
           <OrdersColumn
-            key={status.id}
-            title={status.label}
-            orders={orders.filter(o => o.status === status.id)}
-            moveOrder={moveOrder}
-            openEditor={openEditor}
+              key={status.id}
+              title={status.label}
+              orders={filteredOrders.filter(o => o.status === status.id)}
+              moveOrder={moveOrder}
+              openEditor={openEditor}  
           />
         ))}
       </div>
+      
     </>
   );
 }
@@ -389,15 +425,35 @@ function DashboardContent({ orders, moveOrder, openEditor }) {
 /* --- OrdersPerDay --- */
 function OrdersPerDay({ orders }) {
   const grouped = orders.reduce((acc, order) => {
-    const date = new Date(order.createdAt);
+  const date = new Date(order.createdAt);
 
-    const dayStr = `${date.getDate().toString().padStart(2, "0")}-${(
-      date.getMonth() + 1
-    ).toString().padStart(2, "0")}-${date.getFullYear()}`;
+  const dayStr = `${date.getDate().toString().padStart(2, "0")}-${(
+    date.getMonth() + 1
+  ).toString().padStart(2, "0")}-${date.getFullYear()}`;
 
-    acc[dayStr] = (acc[dayStr] || 0) + 1;
-    return acc;
-  }, {});
+  const total = order.items.reduce(
+    (sum, item) => sum + item.price + item.extras.length * 0.7,
+    0
+  );
+
+  if (!acc[dayStr]) {
+    acc[dayStr] = {
+      count: 0,
+      total: 0,
+      delivery: 0,
+      salon: 0,
+      recoger: 0
+    };
+  }
+
+  acc[dayStr].count += 1;
+  acc[dayStr].total += total;
+
+  // 👉 sumar por tipo
+  acc[dayStr][order.type] += total;
+
+  return acc;
+}, {});
 
   const data = Object.entries(grouped);
 
@@ -405,12 +461,17 @@ function OrdersPerDay({ orders }) {
     <div style={{ padding: "20px" }}>
       <h2>Pedidos por día</h2>
 
-      <ul>
-        {data.map(([date, count]) => (
-          <li key={date}>
-            📅 {date}: <strong>{count}</strong> pedidos
-          </li>
-        ))}
+      <ul className="orders-day-list">
+        {data.map(([date, info]) => (
+        <li key={date}>
+          📅 {date}: <strong>{info.count}</strong> pedidos <br />
+
+          💰 Total: <strong>{info.total.toFixed(2)} €</strong><br />
+          🚚 Delivery: {info.delivery.toFixed(2)} €<br />
+          🍽 Salón: {info.salon.toFixed(2)} €<br />
+          🛍 Recoger: {info.recoger.toFixed(2)} €
+        </li>
+      ))}
       </ul>
     </div>
   );
@@ -447,6 +508,7 @@ function WeeklyAverage({ orders }) {
 
 /* --- MAIN --- */
 export default function OrdersDashboard() {
+  const [typeFilter, setTypeFilter] = useState("all");
   const [orders, setOrders] = useState(sampleOrders);
   const [nextId, setNextId] = useState(2);
   const [view, setView] = useState("dashboard");
@@ -487,9 +549,12 @@ const addOrder = useCallback(() => {
     };
   });
 
+  const types = ["delivery", "salon", "recoger"];
+
   const newOrder = {
     id: nextId,
     address: `${calle} ${numero}`,
+    type: types[Math.floor(Math.random() * types.length)],
     priority: ["alta", "normal", "baja"][Math.floor(Math.random() * 3)],
     status: "new",
     createdAt: Date.now(),
@@ -521,6 +586,27 @@ const addOrder = useCallback(() => {
             orders={orders}
             moveOrder={moveOrder}
             openEditor={setSelectedOrder}
+            viewType="all"
+            typeFilter={typeFilter}
+            setTypeFilter={setTypeFilter}
+          />
+        )}
+
+        {view === "salon" && (
+          <DashboardContent
+            orders={orders.filter(o => o.type === "salon")}
+            moveOrder={moveOrder}
+            openEditor={setSelectedOrder}
+            viewType="salon"
+          />
+        )}
+
+        {view === "recoger" && (
+          <DashboardContent
+            orders={orders.filter(o => o.type === "recoger")}
+            moveOrder={moveOrder}
+            openEditor={setSelectedOrder}
+            viewType="recoger"
           />
         )}
 
