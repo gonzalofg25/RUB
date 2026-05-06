@@ -319,11 +319,13 @@ function EditOrderModal({ order, updateOrder,deleteOrder , close }) {
 
             <button className="eliminar" onClick={() => removeItem(i)}>Eliminar</button>
 
-            {menu.extras.map(extra => (
-              <button key={extra.name} onClick={() => addExtra(i, extra)}>
-                + {extra.name}
-              </button>
-            ))}
+            {!menu.bebidas.some(b => b.name === item.name) && (
+              menu.extras.map(extra => (
+                <button key={extra.name} onClick={() => addExtra(i, extra)}>
+                  + {extra.name}
+                </button>
+              ))
+            )}
           </div>
         ))}
 
