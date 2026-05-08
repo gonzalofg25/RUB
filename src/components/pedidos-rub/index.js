@@ -380,11 +380,10 @@ function OrdersColumn({ title, orders, moveOrder, openEditor }) {
 /* --- Dashboard --- */
 function DashboardContent({ orders, moveOrder, openEditor, viewType, typeFilter,setTypeFilter  }) {
   
-  const isSpecialView = typeFilter !== "all";
-
-  const visibleStatuses = isSpecialView
-    ? statuses.filter(s => s.id !== "delivered")
-    : statuses;
+  const visibleStatuses =
+  typeFilter === "delivery" || typeFilter === "all"
+    ? statuses
+    : statuses.filter(s => s.id !== "delivered");
 
   const filteredOrders =
   typeFilter === "all"
