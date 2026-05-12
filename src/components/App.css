@@ -160,12 +160,12 @@ body {
   font-weight: bold;
 }
 
-/* --- TIEMPOS --- */
+/* --- Tiempos --- */
 .time-green { color: #19703d; }
 .time-orange { color: #d6880a; }
 .time-red { color: #e63946; }
 
-/* --- MODAL --- */
+/* --- Modal --- */
 .modal {
   position: fixed;
   top: 0;
@@ -197,7 +197,6 @@ body {
   text-transform: capitalize;
 }
 
-/* botones del modal */
 .modal button {
   margin: 4px;
   padding: 6px 10px;
@@ -212,16 +211,13 @@ body {
   background: #949190;
 }
 
-/* items dentro del modal */
 .modal-content > div {
   margin-bottom: 10px;
   padding-bottom: 10px;
   border-bottom: 1px solid #eee;
 }
 
-/* --- RESPONSIVE --- */
-
-/* Sidebar arriba */
+/* --- Responsive --- */
 @media (max-width: 1400px) {
   .sidebar {
     width: 100%;
@@ -240,7 +236,6 @@ body {
   }
 }
 
-/* Columnas */
 @media (max-width: 1200px) {
   .columns {
     grid-template-columns: repeat(3, 1fr);
@@ -276,6 +271,7 @@ body {
   }
 }
 
+/* --- Extras --- */
 .extra-tag {
   display: inline-block;
   margin: 3px;
@@ -301,12 +297,14 @@ body {
   color: white;
 }
 
+/* --- Tipos de pedido --- */
 .order-type {
   font-size: 12px;
   margin-top: 4px;
   font-weight: 600;
 }
 
+/* --- Lista pedidos por día --- */
 .orders-day-list li {
   margin-bottom: 15px;
   background: white;
@@ -314,6 +312,7 @@ body {
   border-radius: 10px;
 }
 
+/* --- Filtros --- */
 .filters {
   display: flex;
   justify-content: center;
@@ -331,4 +330,34 @@ body {
 
 .filters button:hover {
   background: #949190;
+}
+
+/* --- Repartidor en tarjeta --- */
+.order-repartidor {
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 3px;
+}
+
+.filters {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap; /* 👈 importante para muchos botones */
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filters button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  background: #d4cfcc;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filters button.active {
+  background: #949190; /* más oscuro */
+  color: white;
+  transform: scale(1.05);
 }

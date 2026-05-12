@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback} from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Notificacion from "../../resources/notificacion.mp3";
 import {
   BarChart,
@@ -10,7 +10,14 @@ import {
   ResponsiveContainer
 } from "recharts";
 
-/* --- MENU --- */
+/* ─────────────────────────────────────────
+   CONSTANTES
+───────────────────────────────────────── */
+const EXTRA_PRICE = 0.7; // ✅ Fix #6: precio de extra como constante
+
+/* ─────────────────────────────────────────
+   MENÚ
+───────────────────────────────────────── */
 const menu = {
   entrantes: [
     { name: "Patatas", price: 2.0 },
@@ -21,48 +28,40 @@ const menu = {
     { name: "Vegan Nuggets", price: 4.2 },
     { name: "Patatas Gajo RUB", price: 2.9 }
   ],
-
   hamburguesas_ternera: [
     { name: "Hamburguesa Simple", price: 2.3 },
     { name: "Hamburguesa Especial", price: 5.1 },
     { name: "Mustang", price: 5.4 }
   ],
-
   hamburguesas_buey: [
     { name: "Toscana", price: 6.8, premium: true },
     { name: "Cowboy", price: 6.7, premium: true }
   ],
-
   black_angus: [
     { name: "Montecarlo", price: 8.6, premium: true },
     { name: "Angus SPECIAL RUB", price: 8.6, premium: true },
     { name: "Angus Custom", price: 8.6, premium: true },
     { name: "Toscana Supreme", price: 10.4, premium: true }
   ],
-
   ensaladas: [
     { name: "Fresca", price: 4.7 },
     { name: "Capresse", price: 5.2 },
     { name: "César", price: 5.2 }
   ],
-
   smash: [
     { name: "Smash Rub", price: 8.4, premium: true },
     { name: "Smash Montecarlo", price: 8.4, premium: true },
     { name: "Smash Supreme", price: 8.4, premium: true }
   ],
-
   pollo: [
     { name: "Pimpollo", price: 4.0 },
     { name: "Pimpollo Custom", price: 6.9, premium: true }
   ],
-
   pan_ligero: [
     { name: "Ana", price: 5.0, premium: true },
     { name: "Trufada", price: 5.0, premium: true },
     { name: "Española", price: 5.0, premium: true }
   ],
-
   sandwiches: [
     { name: "Mixto", price: 3.0 },
     { name: "Moñi", price: 3.0 },
@@ -71,13 +70,11 @@ const menu = {
     { name: "Jackson", price: 5.0 },
     { name: "Valyrio", price: 5.5 }
   ],
-
   pan_golden: [
     { name: "Serrano", price: 6.4, premium: true },
     { name: "Donosti", price: 6.4, premium: true },
     { name: "Máximo", price: 6.4, premium: true }
   ],
-
   perritos: [
     { name: "Perrito Simple", price: 2.7 },
     { name: "Perrito Especial", price: 3.7 },
@@ -85,7 +82,6 @@ const menu = {
     { name: "Hindú", price: 3.5 },
     { name: "Zeppelin", price: 3.5 }
   ],
-
   baguettes: [
     { name: "Bacon y queso", price: 4.0 },
     { name: "Tortilla", price: 4.4 },
@@ -94,7 +90,6 @@ const menu = {
     { name: "Jackson", price: 5.9 },
     { name: "Especial", price: 5.7 }
   ],
-
   gondolitas: [
     { name: "York", price: 3.2 },
     { name: "Carbonara", price: 4.0 },
@@ -104,13 +99,11 @@ const menu = {
     { name: "Del Monte", price: 5.4 },
     { name: "Guay", price: 4.7 }
   ],
-
   vegetariano: [
     { name: "Veggie Burger", price: 8.0 },
     { name: "Sandwich Especial Veg", price: 6.0 },
     { name: "Sandwich Jackson Veg", price: 6.0 }
   ],
-
   bebidas: [
     { name: "Coca-Cola", price: 1.2 },
     { name: "Coca-Cola Zero", price: 1.2 },
@@ -119,19 +112,20 @@ const menu = {
     { name: "Nestea", price: 1.2 },
     { name: "Agua", price: 1.2 }
   ],
-
   extras: [
-    { name: "Bacon", price: 0.7 },
-    { name: "Queso", price: 0.7 },
-    { name: "Mayonesa", price: 0.7 },
-    { name: "Barbacoa", price: 0.7 },
-    { name: "Curry", price: 0.7 },
-    { name: "Nevada", price: 0.7 },
-    { name: "Volcán", price: 0.7}
+    { name: "Bacon", price: EXTRA_PRICE },
+    { name: "Queso", price: EXTRA_PRICE },
+    { name: "Mayonesa", price: EXTRA_PRICE },
+    { name: "Barbacoa", price: EXTRA_PRICE },
+    { name: "Curry", price: EXTRA_PRICE },
+    { name: "Nevada", price: EXTRA_PRICE },
+    { name: "Volcán", price: EXTRA_PRICE }
   ]
 };
 
-/* --- Calles --- */
+/* ─────────────────────────────────────────
+   DATOS ESTÁTICOS
+───────────────────────────────────────── */
 const callesLosPalacios = [
   "Calle Real",
   "Avenida de Sevilla",
@@ -146,18 +140,7 @@ const callesLosPalacios = [
   "Calle José María Pemán"
 ];
 
-/* --- Sample --- */
-const sampleOrders = [
-  {
-    id: 1,
-    address: "Calle Real 12",
-    type: "delivery",
-    priority: "normal",
-    status: "new",
-    createdAt: Date.now(),
-    items: [{ name: "Simple", price: 2.3, extras: [], quantity: 1 }]
-  }
-];
+const repartidores = ["Juan", "Pedro", "Pepe", "Jesumi", "Godino"];
 
 const statuses = [
   { id: "new", label: "🆕 Nuevos" },
@@ -166,7 +149,50 @@ const statuses = [
   { id: "delivered", label: "🚚 En reparto" }
 ];
 
-/* --- Sidebar --- */
+// ✅ Fix #7: datos de muestra solo en desarrollo
+const sampleOrders =
+  process.env.NODE_ENV === "development"
+    ? [
+        {
+          id: 1,
+          address: "Calle Real 12",
+          type: "delivery",
+          repartidor: "Juan",
+          priority: "normal",
+          status: "new",
+          createdAt: Date.now(),
+          items: [
+            {
+              id: crypto.randomUUID(), // ✅ Fix #3: id único en cada item
+              name: "Hamburguesa Simple",
+              price: 2.3,
+              extras: [],
+              quantity: 1
+            }
+          ]
+        }
+      ]
+    : [];
+
+/* ─────────────────────────────────────────
+   UTILIDADES (fuera del componente)
+───────────────────────────────────────── */
+
+// ✅ Fix #5: función de total reutilizable
+const calcTotal = items =>
+  items.reduce((acc, i) => acc + i.price + i.extras.length * EXTRA_PRICE, 0);
+
+// ✅ Fix #4: función movida fuera del componente
+const getRandomItemFromMenu = () => {
+  const categories = Object.keys(menu).filter(k => k !== "extras");
+  const randomCat = categories[Math.floor(Math.random() * categories.length)];
+  const items = menu[randomCat];
+  return items[Math.floor(Math.random() * items.length)];
+};
+
+/* ─────────────────────────────────────────
+   SIDEBAR
+───────────────────────────────────────── */
 function Sidebar({ setSelected }) {
   return (
     <div className="sidebar">
@@ -177,7 +203,9 @@ function Sidebar({ setSelected }) {
   );
 }
 
-/* --- OrderCard --- */
+/* ─────────────────────────────────────────
+   ORDER CARD
+───────────────────────────────────────── */
 function OrderCard({ order, moveOrder, openEditor }) {
   const [expanded, setExpanded] = useState(false);
   const minutes = Math.floor((Date.now() - order.createdAt) / 60000);
@@ -186,66 +214,77 @@ function OrderCard({ order, moveOrder, openEditor }) {
   if (minutes >= 30) timeClass = "time-red";
   else if (minutes >= 20) timeClass = "time-orange";
 
-  const total = order.items.reduce(
-    (acc, i) => acc + i.price + i.extras.length * 0.7,
-    0
-  );
+  const total = calcTotal(order.items); // ✅ Fix #5
 
   return (
-    <div className={`order-card priority-${order.priority}`} onClick={() => openEditor(order)}>
+    <div
+      className={`order-card priority-${order.priority}`}
+      onClick={() => openEditor(order)}
+    >
       <div className="order-header">
         <span className="order-title">Pedido #{order.id}</span>
         <span className={`order-time ${timeClass}`}>⏱ {minutes} min</span>
       </div>
 
-      {order.type === "delivery" && (
-        <div className="order-address">📍 {order.address}
-        {order.type === "salon" && "🍽 En local"}
-        {order.type === "recoger" && "🛍 Recogida en mostrador"}
-        </div>
-      )}
-
+      {/* ✅ Fix #8: eliminado código muerto, cada tipo en su bloque correcto */}
       <div className="order-type">
         {order.type === "salon" && "🍽 Salón"}
         {order.type === "recoger" && "🛍 Recoger"}
         {order.type === "delivery" && "🚚 Domicilio"}
       </div>
 
+      {order.type === "delivery" && (
+        <div className="order-address">
+          📍 {order.address}
+          <div className="order-repartidor">🧑‍🚚 {order.repartidor}</div>
+        </div>
+      )}
+
       <ul className="order-items">
-      {(expanded ? order.items : order.items.slice(0, 2)).map((item, i) => (
-        <li key={i}>
-          • {item.name} ({item.extras.join(", ")})
-        </li>
-      ))}
+        {(expanded ? order.items : order.items.slice(0, 2)).map(item => (
+          // ✅ Fix #3: key por id único en lugar de índice
+          <li key={item.id}>
+            • {item.name}
+            {item.extras.length > 0 && ` (${item.extras.join(", ")})`}
+          </li>
+        ))}
       </ul>
 
       {order.items.length > 2 && (
-      <button
-        className="toggle-btn"
-        onClick={(e) => {
-          e.stopPropagation();
-          setExpanded(prev => !prev);
-        }}
-      >
-        {expanded ? "Ver menos" : `Ver más (${order.items.length - 2})`}
-      </button>
-    )}
+        <button
+          className="toggle-btn"
+          onClick={e => {
+            e.stopPropagation();
+            setExpanded(prev => !prev);
+          }}
+        >
+          {expanded ? "Ver menos" : `Ver más (${order.items.length - 2})`}
+        </button>
+      )}
 
       <div className="order-total">{total.toFixed(2)} €</div>
 
       <div className="actions">
         {order.status === "new" && (
-          <button onClick={e => { e.stopPropagation(); moveOrder(order.id, "preparing"); }}>
+          <button
+            onClick={e => {
+              e.stopPropagation();
+              moveOrder(order.id, "preparing");
+            }}
+          >
             Empezar preparación
           </button>
         )}
-
         {order.status === "preparing" && (
-          <button onClick={e => { e.stopPropagation(); moveOrder(order.id, "ready"); }}>
+          <button
+            onClick={e => {
+              e.stopPropagation();
+              moveOrder(order.id, "ready");
+            }}
+          >
             Marcar como listo
           </button>
         )}
-
         {order.status === "ready" && order.type === "delivery" && (
           <button
             onClick={e => {
@@ -261,14 +300,24 @@ function OrderCard({ order, moveOrder, openEditor }) {
   );
 }
 
-/* --- Modal Editor --- */
-function EditOrderModal({ order, updateOrder,deleteOrder , close }) {
+/* ─────────────────────────────────────────
+   MODAL EDITOR
+───────────────────────────────────────── */
+function EditOrderModal({ order, updateOrder, deleteOrder, close }) {
   if (!order) return null;
 
   const addItem = item => {
     updateOrder({
       ...order,
-      items: [...order.items, { ...item, extras: [], quantity: 1 }]
+      items: [
+        ...order.items,
+        {
+          ...item,
+          id: crypto.randomUUID(), // ✅ Fix #3: id único al añadir
+          extras: [],
+          quantity: 1
+        }
+      ]
     });
   };
 
@@ -279,16 +328,24 @@ function EditOrderModal({ order, updateOrder,deleteOrder , close }) {
     });
   };
 
+  // ✅ Fix #2: sin mutación directa del estado
   const addExtra = (index, extra) => {
-    const items = [...order.items];
-    items[index].extras.push(extra.name);
+    const items = order.items.map((item, i) =>
+      i === index ? { ...item, extras: [...item.extras, extra.name] } : item
+    );
     updateOrder({ ...order, items });
   };
 
-  const total = order.items.reduce(
-    (acc, i) => acc + i.price + i.extras.length * 0.7,
-    0
-  );
+  const removeExtra = (itemIndex, extraIndex) => {
+    const items = order.items.map((item, i) =>
+      i === itemIndex
+        ? { ...item, extras: item.extras.filter((_, eIdx) => eIdx !== extraIndex) }
+        : item
+    );
+    updateOrder({ ...order, items });
+  };
+
+  const total = calcTotal(order.items); // ✅ Fix #5
 
   return (
     <div className="modal" onClick={close}>
@@ -296,36 +353,33 @@ function EditOrderModal({ order, updateOrder,deleteOrder , close }) {
         <h2>Editar Pedido #{order.id}</h2>
 
         {order.items.map((item, i) => (
-          <div key={i}>
+          // ✅ Fix #3: key por id único
+          <div key={item.id}>
             <strong>{item.name}</strong>
             <div>
               Extras:
               {item.extras.length === 0 && " ninguno"}
-
               {item.extras.map((extra, idx) => (
                 <span
                   key={idx}
                   className="extra-tag"
-                  onClick={() => {
-                    const items = [...order.items];
-                    items[i].extras = items[i].extras.filter((_, eIdx) => eIdx !== idx);
-                    updateOrder({ ...order, items });
-                  }}
+                  onClick={() => removeExtra(i, idx)}
                 >
                   {extra} ❌
                 </span>
               ))}
             </div>
 
-            <button className="eliminar" onClick={() => removeItem(i)}>Eliminar</button>
+            <button className="eliminar" onClick={() => removeItem(i)}>
+              Eliminar
+            </button>
 
-            {!menu.bebidas.some(b => b.name === item.name) && (
+            {!menu.bebidas.some(b => b.name === item.name) &&
               menu.extras.map(extra => (
                 <button key={extra.name} onClick={() => addExtra(i, extra)}>
                   + {extra.name}
                 </button>
-              ))
-            )}
+              ))}
           </div>
         ))}
 
@@ -333,7 +387,6 @@ function EditOrderModal({ order, updateOrder,deleteOrder , close }) {
 
         {Object.entries(menu).map(([cat, items]) => {
           if (cat === "extras") return null;
-
           return (
             <div key={cat}>
               <h4>{cat}</h4>
@@ -360,127 +413,193 @@ function EditOrderModal({ order, updateOrder,deleteOrder , close }) {
         </button>
 
         <button onClick={close}>Cerrar</button>
-              </div>
-            </div>
-          );
-        }
+      </div>
+    </div>
+  );
+}
 
-/* --- Columns --- */
+/* ─────────────────────────────────────────
+   ORDERS COLUMN
+───────────────────────────────────────── */
 function OrdersColumn({ title, orders, moveOrder, openEditor }) {
   return (
     <div className="column">
       <h2>{title}</h2>
       {orders.map(order => (
-        <OrderCard key={order.id} order={order} moveOrder={moveOrder} openEditor={openEditor} />
+        <OrderCard
+          key={order.id}
+          order={order}
+          moveOrder={moveOrder}
+          openEditor={openEditor}
+        />
       ))}
     </div>
   );
 }
 
-/* --- Dashboard --- */
-function DashboardContent({ orders, moveOrder, openEditor, viewType, typeFilter,setTypeFilter  }) {
-  
+/* ─────────────────────────────────────────
+   DASHBOARD CONTENT
+───────────────────────────────────────── */
+function DashboardContent({
+  orders,
+  moveOrder,
+  openEditor,
+  typeFilter,
+  setTypeFilter,
+  repartidorFilter,
+  setRepartidorFilter
+}) {
   const visibleStatuses =
-  typeFilter === "delivery" || typeFilter === "all"
-    ? statuses
-    : statuses.filter(s => s.id !== "delivered");
+    typeFilter === "delivery" || typeFilter === "all"
+      ? statuses
+      : statuses.filter(s => s.id !== "delivered");
 
   const filteredOrders =
-  typeFilter === "all"
-    ? orders
-    : orders.filter(o => o.type === typeFilter);
+    typeFilter === "all" ? orders : orders.filter(o => o.type === typeFilter);
+
+  const repartidorFilteredOrders =
+    repartidorFilter === "all"
+      ? filteredOrders
+      : filteredOrders.filter(o => o.repartidor === repartidorFilter);
 
   return (
     <>
       <h1 className="logo">RUB</h1>
 
       <div className="filters">
-      <button onClick={() => setTypeFilter("all")}>Todos</button>
-      <button onClick={() => setTypeFilter("delivery")}>🚚 Domicilio</button>
-      <button onClick={() => setTypeFilter("salon")}>🍽 Salón</button>
-      <button onClick={() => setTypeFilter("recoger")}>🛍 Recoger</button>
-    </div>
+        <button
+          className={typeFilter === "all" ? "active" : ""}
+          onClick={() => setTypeFilter("all")}
+        >
+          Todos
+        </button>
+        <button
+          className={typeFilter === "delivery" ? "active" : ""}
+          onClick={() => setTypeFilter("delivery")}
+        >
+          🚚 Domicilio
+        </button>
+
+        <button
+          className={typeFilter === "salon" ? "active" : ""}
+          onClick={() => setTypeFilter("salon")}
+        >
+          🍽 Salón
+        </button>
+
+        <button
+          className={typeFilter === "recoger" ? "active" : ""}
+          onClick={() => setTypeFilter("recoger")}
+        >
+          🛍 Recoger
+        </button>
+      </div>
+
+      <div className="filters">
+        <button
+          className={repartidorFilter === "all" ? "active" : ""}
+          onClick={() => setRepartidorFilter("all")}
+        >
+          Todos
+        </button>
+
+        {repartidores.map(r => (
+          <button
+            key={r}
+            className={repartidorFilter === r ? "active" : ""}
+            onClick={() => setRepartidorFilter(r)}
+          >
+            🧑‍🚚 {r}
+          </button>
+        ))}
+      </div>
 
       <div className="stats">
-        <div>Pedidos activos <span>{orders.length}</span></div>
-        <div>Preparando <span>{orders.filter(o => o.status === "preparing").length}</span></div>
-        <div>Listos <span>{orders.filter(o => o.status === "ready").length}</span></div>
+        <div>
+          Pedidos activos <span>{orders.length}</span>
+        </div>
+        <div>
+          Preparando <span>{orders.filter(o => o.status === "preparing").length}</span>
+        </div>
+        <div>
+          Listos <span>{orders.filter(o => o.status === "ready").length}</span>
+        </div>
       </div>
 
       <div className="columns">
         {visibleStatuses.map(status => (
           <OrdersColumn
-              key={status.id}
-              title={status.label}
-              orders={filteredOrders.filter(o => o.status === status.id)}
-              moveOrder={moveOrder}
-              openEditor={openEditor}  
+            key={status.id}
+            title={status.label}
+            orders={repartidorFilteredOrders.filter(o => o.status === status.id)}
+            moveOrder={moveOrder}
+            openEditor={openEditor}
           />
         ))}
       </div>
-      
     </>
   );
 }
 
-/* --- OrdersPerDay --- */
+/* ─────────────────────────────────────────
+   ORDERS PER DAY
+───────────────────────────────────────── */
 function OrdersPerDay({ orders }) {
   const grouped = orders.reduce((acc, order) => {
-  const date = new Date(order.createdAt);
+    const date = new Date(order.createdAt);
+    const dayStr = `${date.getDate().toString().padStart(2, "0")}-${(
+      date.getMonth() + 1
+    )
+      .toString()
+      .padStart(2, "0")}-${date.getFullYear()}`;
 
-  const dayStr = `${date.getDate().toString().padStart(2, "0")}-${(
-    date.getMonth() + 1
-  ).toString().padStart(2, "0")}-${date.getFullYear()}`;
+    const total = calcTotal(order.items); // ✅ Fix #5
 
-  const total = order.items.reduce(
-    (sum, item) => sum + item.price + item.extras.length * 0.7,
-    0
-  );
+    if (!acc[dayStr]) {
+      acc[dayStr] = { count: 0, total: 0, delivery: 0, salon: 0, recoger: 0 };
+    }
 
-  if (!acc[dayStr]) {
-    acc[dayStr] = {
-      count: 0,
-      total: 0,
-      delivery: 0,
-      salon: 0,
-      recoger: 0
-    };
-  }
+    acc[dayStr].count += 1;
+    acc[dayStr].total += total;
+    acc[dayStr][order.type] += total;
 
-  acc[dayStr].count += 1;
-  acc[dayStr].total += total;
-
-  // 👉 sumar por tipo
-  acc[dayStr][order.type] += total;
-
-  return acc;
-}, {});
+    return acc;
+  }, {});
 
   const data = Object.entries(grouped);
 
   return (
     <div style={{ padding: "20px" }}>
       <h2>Pedidos por día</h2>
-
       <ul className="orders-day-list">
         {data.map(([date, info]) => (
-        <li key={date}>
-          📅 {date}: <strong>{info.count}</strong> pedidos <br />
-
-          💰 Total: <strong>{info.total.toFixed(2)} €</strong><br />
-          🚚 Delivery: {info.delivery.toFixed(2)} €<br />
-          🍽 Salón: {info.salon.toFixed(2)} €<br />
-          🛍 Recoger: {info.recoger.toFixed(2)} €
-        </li>
-      ))}
+          <li key={date}>
+            📅 {date}: <strong>{info.count}</strong> pedidos <br />
+            💰 Total: <strong>{info.total.toFixed(2)} €</strong>
+            <br />
+            🚚 Delivery: {info.delivery.toFixed(2)} €<br />
+            🍽 Salón: {info.salon.toFixed(2)} €<br />
+            🛍 Recoger: {info.recoger.toFixed(2)} €
+          </li>
+        ))}
       </ul>
     </div>
   );
 }
 
-/* --- WeeklyAverage --- */
+/* ─────────────────────────────────────────
+   WEEKLY AVERAGE
+───────────────────────────────────────── */
 function WeeklyAverage({ orders }) {
-  const days = ["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"];
+  const days = [
+    "Lunes",
+    "Martes",
+    "Miércoles",
+    "Jueves",
+    "Viernes",
+    "Sábado",
+    "Domingo"
+  ];
   const counts = Array(7).fill(0);
 
   orders.forEach(o => {
@@ -489,10 +608,7 @@ function WeeklyAverage({ orders }) {
     counts[d]++;
   });
 
-  const data = days.map((day, i) => ({
-    day,
-    average: counts[i]
-  }));
+  const data = days.map((day, i) => ({ day, average: counts[i] }));
 
   return (
     <ResponsiveContainer width="100%" height={300}>
@@ -507,20 +623,20 @@ function WeeklyAverage({ orders }) {
   );
 }
 
-/* --- MAIN --- */
+/* ─────────────────────────────────────────
+   MAIN
+───────────────────────────────────────── */
 export default function OrdersDashboard() {
   const [typeFilter, setTypeFilter] = useState("all");
   const [orders, setOrders] = useState(sampleOrders);
-  const [nextId, setNextId] = useState(2);
   const [view, setView] = useState("dashboard");
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [repartidorFilter, setRepartidorFilter] = useState("all");
 
   const notificationSound = useRef(new Audio(Notificacion));
 
   const moveOrder = (id, status) => {
-    setOrders(prev =>
-      prev.map(o => (o.id === id ? { ...o, status } : o))
-    );
+    setOrders(prev => prev.map(o => (o.id === id ? { ...o, status } : o)));
   };
 
   const updateOrder = updated => {
@@ -528,49 +644,47 @@ export default function OrdersDashboard() {
     setSelectedOrder(updated);
   };
 
-  const getRandomItemFromMenu = () => {
-  const categories = Object.keys(menu).filter(k => k !== "extras");
-  const randomCat = categories[Math.floor(Math.random() * categories.length)];
-  const items = menu[randomCat];
-  return items[Math.floor(Math.random() * items.length)];
-};
-
-const addOrder = useCallback(() => {
-  const calle = callesLosPalacios[Math.floor(Math.random() * callesLosPalacios.length)];
-  const numero = Math.floor(Math.random() * 120) + 1;
-
-  const randomItemsCount = Math.floor(Math.random() * 4) + 1;
-
-  const items = Array.from({ length: randomItemsCount }, () => {
-    const item = getRandomItemFromMenu();
-    return {
-      ...item,
-      extras: [],
-      quantity: 1
-    };
-  });
-
-  const types = ["delivery", "salon", "recoger"];
-
-  const newOrder = {
-    id: nextId,
-    address: `${calle} ${numero}`,
-    type: types[Math.floor(Math.random() * types.length)],
-    priority: ["alta", "normal", "baja"][Math.floor(Math.random() * 3)],
-    status: "new",
-    createdAt: Date.now(),
-    items
+  const deleteOrder = id => {
+    setOrders(prev => prev.filter(o => o.id !== id));
+    setSelectedOrder(null);
   };
 
-  notificationSound.current.play().catch(() => {});
-  setOrders(prev => [...prev, newOrder]);
-  setNextId(prev => prev + 1);
-}, [nextId]);
+  // ✅ Fix #1: sin nextId en dependencias — usa setter funcional
+  const addOrder = useCallback(() => {
+    const calle =
+      callesLosPalacios[Math.floor(Math.random() * callesLosPalacios.length)];
+    const numero = Math.floor(Math.random() * 120) + 1;
+    const randomItemsCount = Math.floor(Math.random() * 4) + 1;
+    const types = ["delivery", "salon", "recoger"];
+    const type = types[Math.floor(Math.random() * types.length)];
 
-  const deleteOrder = (id) => {
-  setOrders(prev => prev.filter(o => o.id !== id));
-  setSelectedOrder(null);
-};
+    const items = Array.from({ length: randomItemsCount }, () => ({
+      ...getRandomItemFromMenu(),
+      id: crypto.randomUUID(), // ✅ Fix #3
+      extras: [],
+      quantity: 1
+    }));
+
+    const newOrder = {
+      address: `${calle} ${numero}`,
+      type,
+      repartidor:
+        type === "delivery"
+          ? repartidores[Math.floor(Math.random() * repartidores.length)]
+          : null,
+      priority: ["alta", "normal", "baja"][Math.floor(Math.random() * 3)],
+      status: "new",
+      createdAt: Date.now(),
+      items
+    };
+
+    notificationSound.current.play().catch(() => {});
+
+    setOrders(prev => [
+      ...prev,
+      { ...newOrder, id: prev.length > 0 ? Math.max(...prev.map(o => o.id)) + 1 : 1 }
+    ]);
+  }, []); // ✅ Fix #1: array de dependencias vacío
 
   useEffect(() => {
     const interval = setInterval(addOrder, 15000);
@@ -582,35 +696,18 @@ const addOrder = useCallback(() => {
       <Sidebar setSelected={setView} />
 
       <div className="content">
+        {/* ✅ Fix #9: solo una instancia de DashboardContent, sin vistas salon/recoger huérfanas */}
         {view === "dashboard" && (
           <DashboardContent
             orders={orders}
             moveOrder={moveOrder}
             openEditor={setSelectedOrder}
-            viewType="all"
             typeFilter={typeFilter}
             setTypeFilter={setTypeFilter}
+            repartidorFilter={repartidorFilter}
+            setRepartidorFilter={setRepartidorFilter}
           />
         )}
-
-        {view === "salon" && (
-          <DashboardContent
-            orders={orders.filter(o => o.type === "salon")}
-            moveOrder={moveOrder}
-            openEditor={setSelectedOrder}
-            viewType="salon"
-          />
-        )}
-
-        {view === "recoger" && (
-          <DashboardContent
-            orders={orders.filter(o => o.type === "recoger")}
-            moveOrder={moveOrder}
-            openEditor={setSelectedOrder}
-            viewType="recoger"
-          />
-        )}
-
         {view === "ordersPerDay" && <OrdersPerDay orders={orders} />}
         {view === "weeklyAverage" && <WeeklyAverage orders={orders} />}
       </div>
@@ -621,7 +718,6 @@ const addOrder = useCallback(() => {
         deleteOrder={deleteOrder}
         close={() => setSelectedOrder(null)}
       />
-      
     </div>
   );
 }
