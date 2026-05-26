@@ -1,8 +1,10 @@
 import { render, screen } from '@testing-library/react';
-import App from './App';
+import App from './components/App';
 
-test('renders learn react link', () => {
+test('renders the RUB orders dashboard', () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+
+  expect(screen.getByRole('heading', { name: /rub/i })).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: /pedidos hoy/i })).toBeInTheDocument();
+  expect(screen.getByText(/pedidos activos/i)).toBeInTheDocument();
 });
